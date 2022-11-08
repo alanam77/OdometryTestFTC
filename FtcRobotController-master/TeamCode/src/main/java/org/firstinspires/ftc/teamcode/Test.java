@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.arcrobotics.ftclib.kinematics.Odometry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,12 +14,20 @@ public class Test extends LinearOpMode {
     @Override
     public void runOpMode(){
         dr = new Drivetrain(hardwareMap, this);
-        dr.run();
         while(opModeInInit()){
-            telemetry.addData("Left, Right, Aux: ", "%6d %6d %6d",dr.currLpos, dr.currRpos, dr.currApos);
-            telemetry.addData("XYH: ", "%6d %6d %6d", dr.pos.x, dr.pos.y, Math.toDegrees(dr.pos.heading));
-            telemetry.addData("Thread State Alive: ", dr.isAlive()? "Yes": "No");
+            dr.Odometry();
+            telemetry.addData("Left: ", dr.currLpos);
+            telemetry.addData("Right: ", dr.currRpos);
+            telemetry.addData("Aux: ", dr.currApos);
+            telemetry.addData("X: ", dr.pos.x);
+            telemetry.addData("Y: ", dr.pos.y);
+            telemetry.addData("H: ", Math.toDegrees(dr.pos.heading));
             telemetry.update();
+        }
+        while (opModeIsActive()){
+            telemetry.update();
+            dr.goToPos(0,30,0,0.2,1);
+            break;
         }
     }
 
